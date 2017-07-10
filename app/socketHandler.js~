@@ -1,0 +1,46 @@
+
+
+module.exports = function(io, streams) {
+ 
+  io.on('connection', function(client) {
+     //client.id = "3ZzENryFIwOdcBqfAAAA";
+     module.exports.cid=client.id;
+	if(client.id == 'undefined' || client.id == undefined || client.id == 'null' || client.id == null)
+{
+
+return;
+}
+         console.log('-- ' + client.id + ' joined --');
+    client.emit('id', client.id);
+
+    client.on('message', function (details) {
+      var otherClient = io.sockets.connected[details.to];
+
+      if (!otherClient) {
+        return;
+      }
+        delete details.to;
+        details.from = client.id;
+        otherClient.emit('message', details);
+    });
+
+      
+    client.on('readyToStream', function(options) {
+      console.log('-- ' + client.id + ' is ready to stream --');
+      
+      streams.addStream(client.id, options.name); 
+    });
+    
+    client.on('update', function(options) {
+      console.log('update vale'+ options.name);
+      streams.update(client.id, options.name);
+    });
+    function leave() {
+      console.log('-- ' + client.id + ' left --');
+      streams.removeStream(client.id);
+    }
+
+    client.on('disconnect', leave);
+    client.on('leave', leave);
+  });
+};

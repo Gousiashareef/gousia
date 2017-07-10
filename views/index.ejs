@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html ng-app="projectRtc">
+  <head>
+    <title><%= title %></title>
+    <base href="/" />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+	
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="javascripts/adapter.js"></script>
+	<script type="text/javascript" src="javascripts/rtcClient.js"></script>
+	
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js">
+	</script>
+	<script type="text/javascript" src="javascripts/app.js"></script>
+  </head>
+  <body>
+  	<!-- <h1><%= header %></h1> -->
+
+  	<!-- <%= include local-cam %> -->
+    <div class="localStream" ng-show = val ng-controller="LocalStreamController">
+<!--     <button ng-click="client()">click</button>
+ -->      <!-- <p><%= username %>: <input ng-model="name"/></p> -->
+      <video id="localVideo" muted="muted" autoplay="true"></video>
+
+      <li ng-click="toggleCam()">
+        <a href>{{ cameraIsOn ? 'Stop' : 'Start' }}</a>
+      </li>
+      <div ng-show="cameraIsOn">    
+        <p><%= share %>:</p>
+        <a>{{link}}</a>
+      </div>
+    </div>
+
+  	<!-- <%= include remote-streams %> -->
+    <div class="remoteStreams" ng-show = val1 ng-controller="RemoteStreamsController">
+     
+      <div id="remoteVideosContainer"></div>
+
+      <table>
+          <!-- <thead>
+            <tr>
+                <th>Stream</th><th>1-way</th><th>2-way</th>
+            </tr>
+          </thead> -->
+          <tbody>
+            <tr ng-repeat="stream in remoteStreams">
+                <!-- <td><a>{{stream.name}}</a></td> -->
+                    <td ng-click="view(stream)"><a>View</a></td>
+                    <!-- <td ng-click="call(stream)"><a>Call</a></td> -->
+            </tr>
+        </tbody>
+      </table>
+
+      
+    </div>
+    <!-- <li ng-click="loadData()" style="width: 240px">
+            <a href>Refresh</a>
+      </li> -->
+  	
+  </body>
+</html>
